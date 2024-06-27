@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Shop Finder</title>
+</head>
+<body>
+    <h1>Minecraft Shop Finder</h1>
+    
+    <h2>Add a Shop</h2>
+    <form id="addShopForm">
+        <label for="shopName">Shop Name:</label><br>
+        <input type="text" id="shopName" name="name" required><br>
+        
+        <label for="coordinates">Coordinates:</label><br>
+        <input type="text" id="coordinates" name="coordinates" required><br>
+        
+        <label for="OwnersName">Owners Name:</label><br>
+        <input type="text" id="username" name="username" required>
+        
+        <button type="submit">Add Shop</button>
+    </form>
+
+    <h2>Add an Item</h2>
+    <form id="addItemForm">
+        <label for="itemName">Item Name:</label><br>
+        <input type="text" id="itemName" name="item_name" required><br>
+        
+        <label for="price">Price:</label><br>
+        <input type="number" id="price" name="price" step="0.01" required><br>
+        
+        <label for="shopId">Shop ID:</label><br>
+        <input type="number" id="shopId" name="shop_id" required><br>
+        
+        <button type="submit">Add Item</button>
+    </form>
+
+    <h2>Search for Items</h2>
+    <form id="searchForm">
+        <label for="searchItem">Search Item:</label><br>
+        <input type="text" id="searchItem" name="item_name" required><br>
+        
+        <button type="submit">Search</button>
+    </form>
+
+    
+    <h2>Search Results</h2>
+    <div id="searchResults"></div>
+
+    <h2>All Shops</h2>
+    <div id="shopsList"></div>
+
+
+    <script>
+        const addShopForm = document.getElementById('addShopForm');
+        const addItemForm = document.getElementById('addItemForm');
+        const searchForm = document.getElementById('searchForm');
+        const shopsListDiv = document.getElementById('shopsList');
+        const searchResultsDiv = document.getElementById('searchResults');
+        
+        // Function to fetch and display all shops
+        async function fetchAndDisplayShops() {
+            const response = await fetch('/shops');
+            const data = await response.json();
+            
+            shopsListDiv.innerHTML = '';
+            data.forEach(shop => {
+                const shopDiv = document.createElement('div');
+                shopDiv.innerHTML = `
+                    <h3>Shop ID: ${shop.shop_id}</h3>
+                    <p>Name: ${shop.name}</p>
+                    <p>Owner: ${shop.owner}</p>
+                    <p>Coordinates: ${shop.coordinates}</p>
+                    <p>Shop ID: ${shop.shop_id}</p>
+                    <hr>
+                `;
+                shopsListDiv.appendChild(shopDiv);
+            });
+        }
+
+        addShopForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(addShopForm);
+
+            const response = await fetch('/add_shop', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            alert(data.message); // Show message (optional)
+            await fetchAndDisplayShops(); // Refresh shops list
+        });
+
+        addItemForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(addItemForm);
+
+            const response = await fetch('/add_item', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            alert(data.message); // Show message (optional)
+        });
+
+        searchForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const formData = new FormData(searchForm);
+            const item_name = formData.get('item_name');
+
+            const response = await fetch(`/search?item_name=${item_name}`);
+            const data = await response.json();
+
+            searchResultsDiv.innerHTML = '';
+            if (data.length === 0) {
+                searchResultsDiv.innerHTML = '<p>No items found.</p>';
+            } else {
+                data.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.innerHTML = `
+                        <h3>${item.item_name}</h3>
+                        <p>Price: ${item.price}</p>
+                        <p>Shop Name: ${item.shop_name}</p>
+                        <p>Coordinates: ${item.coordinates}</p>
+                        <hr>
+                    `;
+                    searchResultsDiv.appendChild(itemDiv);
+                });
+            }
+        });
+
+        // Initial fetch and display of shops
+        fetchAndDisplayShops();
+    </script>
+</body>
+</html>
