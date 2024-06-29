@@ -4,61 +4,92 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minecraft Shop Finder</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 20px;
+            background-color: #f5f5f5;
+        }
+        h1, h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-container {
+            margin-bottom: 40px;
+        }
+        .shop-item {
+            margin-bottom: 20px;
+        }
+        .search-result-item {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Minecraft Shop Finder</h1>
-    
-    <h2>Add a Shop</h2>
-    <form id="addShopForm">
-        <label for="shopName">Shop Name:</label><br>
-        <input type="text" id="shopName" name="name" required><br>
-        
-        <label for="coordinates">Coordinates:</label><br>
-        <input type="text" id="coordinates" name="coordinates" required><br>
-        
-        <label for="OwnersName">Owners Name:</label><br>
-        <input type="text" id="username" name="username" required>
-        
-        <button type="submit">Add Shop</button>
-    </form>
+    <div class="container">
+        <h1>Minecraft Shop Finder</h1>
 
-    <h2>Add an Item</h2>
-    <form id="addItemForm">
-        <label for="itemName">Item Name:</label><br>
-        <input type="text" id="itemName" name="item_name" required><br>
-        
-        <label for="price">Price:</label><br>
-        <input type="number" id="price" name="price" step="0.01" required><br>
-        
-        <label for="shopId">Shop ID:</label><br>
-        <input type="number" id="shopId" name="shop_id" required><br>
-        
-        <button type="submit">Add Item</button>
-    </form>
+        <div class="form-container">
+            <h2>Add a Shop</h2>
+            <form id="addShopForm" class="form-group">
+                <label for="shopName">Shop Name:</label>
+                <input type="text" id="shopName" name="name" class="form-control" required>
 
-    <h2>Search for Items</h2>
-    <form id="searchForm">
-        <label for="searchItem">Search Item:</label><br>
-        <input type="text" id="searchItem" name="item_name" required><br>
-        
-        <button type="submit">Search</button>
-    </form>
+                <label for="coordinates" class="mt-3">Coordinates:</label>
+                <input type="text" id="coordinates" name="coordinates" class="form-control" required>
 
-    
-    <h2>Search Results</h2>
-    <div id="searchResults"></div>
+                <label for="username" class="mt-3">Owners Name:</label>
+                <input type="text" id="username" name="username" class="form-control" required>
 
-    <h2>All Shops</h2>
-    <div id="shopsList"></div>
+                <button type="submit" class="btn btn-primary mt-3">Add Shop</button>
+            </form>
+        </div>
 
+        <div class="form-container">
+            <h2>Add an Item</h2>
+            <form id="addItemForm" class="form-group">
+                <label for="itemName">Item Name:</label>
+                <input type="text" id="itemName" name="item_name" class="form-control" required>
 
+                <label for="price" class="mt-3">Price:</label>
+                <input type="number" id="price" name="price" step="0.01" class="form-control" required>
+
+                <label for="shopId" class="mt-3">Shop ID:</label>
+                <input type="number" id="shopId" name="shop_id" class="form-control" required>
+
+                <button type="submit" class="btn btn-primary mt-3">Add Item</button>
+            </form>
+        </div>
+
+        <div class="form-container">
+            <h2>Search for Items</h2>
+            <form id="searchForm" class="form-group">
+                <label for="searchItem">Search Item:</label>
+                <input type="text" id="searchItem" name="item_name" class="form-control" required>
+
+                <button type="submit" class="btn btn-primary mt-3">Search</button>
+            </form>
+        </div>
+
+        <h2>Search Results</h2>
+        <div id="searchResults" class="search-results-container"></div>
+
+        <h2>All Shops</h2>
+        <div id="shopsList" class="shops-list-container"></div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
         const addShopForm = document.getElementById('addShopForm');
         const addItemForm = document.getElementById('addItemForm');
         const searchForm = document.getElementById('searchForm');
         const shopsListDiv = document.getElementById('shopsList');
         const searchResultsDiv = document.getElementById('searchResults');
-        
+
         // Function to fetch and display all shops
         async function fetchAndDisplayShops() {
             const response = await fetch('/shops');
@@ -67,12 +98,12 @@
             shopsListDiv.innerHTML = '';
             data.forEach(shop => {
                 const shopDiv = document.createElement('div');
+                shopDiv.classList.add('shop-item', 'card', 'p-3');
                 shopDiv.innerHTML = `
                     <h3>Shop ID: ${shop.shop_id}</h3>
-                    <p>Name: ${shop.name}</p>
-                    <p>Owner: ${shop.owner}</p>
-                    <p>Coordinates: ${shop.coordinates}</p>
-                    <p>Shop ID: ${shop.shop_id}</p>
+                    <p><strong>Name:</strong> ${shop.name}</p>
+                    <p><strong>Owner:</strong> ${shop.owner}</p>
+                    <p><strong>Coordinates:</strong> ${shop.coordinates}</p>
                     <hr>
                 `;
                 shopsListDiv.appendChild(shopDiv);
@@ -120,11 +151,12 @@
             } else {
                 data.forEach(item => {
                     const itemDiv = document.createElement('div');
+                    itemDiv.classList.add('search-result-item', 'card', 'p-3');
                     itemDiv.innerHTML = `
                         <h3>${item.item_name}</h3>
-                        <p>Price: ${item.price}</p>
-                        <p>Shop Name: ${item.shop_name}</p>
-                        <p>Coordinates: ${item.coordinates}</p>
+                        <p><strong>Price:</strong> ${item.price}</p>
+                        <p><strong>Shop Name:</strong> ${item.shop_name}</p>
+                        <p><strong>Coordinates:</strong> ${item.coordinates}</p>
                         <hr>
                     `;
                     searchResultsDiv.appendChild(itemDiv);
