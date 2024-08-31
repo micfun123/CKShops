@@ -18,15 +18,13 @@ class Shop(db.Model):
 class Item(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
-    price = db.Column(db.Float, nullable=False)
+    price = db.Column(db.String(80), nullable=False)  # Changed to String
     shop_id = db.Column(db.Integer, db.ForeignKey('shop.id'), nullable=False)
     shop = db.relationship('Shop', backref=db.backref('items', lazy=True))
 
     def __repr__(self):
         return f'Item(name={self.name}, price={self.price}, shop_id={self.shop_id})'
 
-# Create the database tables (if not exist)
-db.create_all()
 
 # Routes
 @app.route('/')
@@ -40,7 +38,6 @@ def add_shop():
     db.session.add(new_shop)
     db.session.commit()
     
-    # Return a message indicating success
     return jsonify({
         'message': 'Shop added successfully!',
         'shop_id': new_shop.id,
@@ -81,13 +78,19 @@ def get_shops():
     shops = Shop.query.all()
     shop_list = []
     for shop in shops:
+        items = Item.query.filter_by(shop_id=shop.id).all()
+        item_list = [{'item_name': item.name, 'price': item.price} for item in items]
         shop_list.append({
             'shop_id': shop.id,
             'name': shop.name,
             'owner': shop.owner,
-            'coordinates': shop.coordinates
+            'coordinates': shop.coordinates,
+            'items': item_list
         })
     return jsonify(shop_list)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)
