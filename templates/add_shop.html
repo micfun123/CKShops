@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Shop</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h2>Add a Shop</h2>
+        <form method="POST">
+            <div class="form-group">
+                <label for="shopName">Shop Name:</label>
+                <input type="text" id="shopName" name="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="coordinates">Coordinates:</label>
+                <input type="text" id="coordinates" name="coordinates" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="username">Owner's Name:</label>
+                <input type="text" id="username" name="username" class="form-control" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Shop</button>
+        </form>
+    </div>
+</body>
+</html>

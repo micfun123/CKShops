@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Shops</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h2>All Shops</h2>
+        {% for shop in shops %}
+            <div class="card p-3 mb-3">
+                <h3>{{ shop.name }}</h3>
+                <p><strong>Owner:</strong> {{ shop.owner }}</p>
+                <p><strong>Coordinates:</strong> {{ shop.coordinates }}</p>
+                <hr>
+                <h4>Items:</h4>
+                <ul>
+                    {% for item in shop.items %}
+                        <li>{{ item.name }} - {{ item.price }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
