@@ -29,7 +29,7 @@ def add_shop():
         new_shop = Shop(name=data['name'], owner=data['username'], coordinates=data['coordinates'])
         db.session.add(new_shop)
         db.session.commit()
-        return redirect(url_for('get_shops'))
+        return redirect(url_for('add_item'))
     return render_template('add_shop.html')
 
 @app.route('/add_item', methods=['GET', 'POST'])
@@ -42,7 +42,7 @@ def add_item():
         new_item = Item(name=data['item_name'], price=data['price'], shop_id=shop_id)
         db.session.add(new_item)
         db.session.commit()
-        return redirect(url_for('get_shops'))
+        return redirect(url_for('add_item'))
     shops = Shop.query.all()
     return render_template('add_item.html', shops=shops)
 
