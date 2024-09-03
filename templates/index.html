@@ -5,24 +5,51 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CubeKrowd Shop Finder</title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Ensures the body content takes up the full height of the page, minus the footer */
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Wrapper to contain the content and push the footer to the bottom */
+        .content-wrapper {
+            min-height: calc(100% - 150px); /* Adjust based on footer height */
+            padding-bottom: 150px; /* Prevents content overlap with the footer */
+        }
+
+        /* Footer styling to lock it to the bottom */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 150; /* Adjust height as necessary */
+            background-color: #343a40; /* Dark background for the footer */
+            color: white;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <div class="container text-center" style="padding: 4%;">
-        <h1>Welcome to CubeKrowd Shop Finder</h1>
-        <br>
-        <p><a href="{{ url_for('search_items') }}" class="btn btn-primary">Search for Items</a></p>
-        <p><a href="{{ url_for('shop_catalogue') }}" class="btn btn-primary">View Shop Catalogue</a></p>
-        <p><a href="{{ url_for('get_shops') }}" class="btn btn-primary">Manage Shops</a></p>
+    <div class="content-wrapper">
+        <div class="container text-center" style="padding: 4%;">
+            <h1>Welcome to CubeKrowd Shop Finder</h1>
+            <br>
+            <p><a href="{{ url_for('search_items') }}" class="btn btn-primary">Search for Items</a></p>
+            <p><a href="{{ url_for('shop_catalogue') }}" class="btn btn-primary">View Shop Catalogue</a></p>
+            <p><a href="{{ url_for('get_shops') }}" class="btn btn-primary">Manage Shops</a></p>
+        </div>
     </div>
 </body>
-<footer class="bg-dark text-white mt-5 py-3">
-    <div class="container text-center">
+<footer>
+    <div class="container">
         <p>Made by <a href="https://www.michaelrbparker.com" class="text-white font-weight-bold">Micfun123 AKA Tea Drinker AKA Michael</a></p>
         <p>
             <a href="https://github.com/micfun123/CKShops" class="text-white">GitHub Repository</a>
         </p>
         <script data-name="BMC-Widget" data-cfasync="false" src="https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js" data-id="Michaelrbparker" data-description="Support me on Buy me a coffee!" data-message="" data-color="#FF5F5F" data-position="right" data-x_margin="18" data-y_margin="18"></script>
-
-        </div>
+    </div>
 </footer>
 </html>
