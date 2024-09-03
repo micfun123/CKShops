@@ -7,14 +7,14 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container text-center">
+    <div class="container text-center" style="padding: 4%;">
         <h1>Welcome to CubeKrowd Shop Finder</h1>
+        <br>
         <p><a href="{{ url_for('search_items') }}" class="btn btn-primary">Search for Items</a></p>
-        <p><a href="{{ url_for('add_shop') }}" class="btn btn-primary">Add a Shop</a></p>
-        <p><a href="{{ url_for('add_item') }}" class="btn btn-primary">Add an Item</a></p>
-        <p><a href="{{ url_for('get_shops') }}" class="btn btn-primary">View All Shops</a></p>
+        <p><a href="{{ url_for('shop_catalogue') }}" class="btn btn-primary">View Shop Catalogue</a></p>
+        <p><a href="{{ url_for('get_shops') }}" class="btn btn-primary">Manage Shops</a></p>
     </div>
-    </body>
+</body>
 <footer class="bg-dark text-white mt-5 py-3">
     <div class="container text-center">
         <p>Made by <a href="https://www.michaelrbparker.com" class="text-white font-weight-bold">Micfun123 AKA Tea Drinker AKA Michael</a></p>

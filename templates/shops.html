@@ -7,8 +7,7 @@
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="container"  style="padding-top: 5%;">
-        
+    <div class="container" style="padding: 5%;">
         <h2>All Shops</h2>
         {% for shop in shops %}
             <div class="card p-3 mb-3">
@@ -16,12 +15,7 @@
                 <p><strong>Owner:</strong> {{ shop.owner }}</p>
                 <p><strong>Coordinates:</strong> {{ shop.coordinates }}</p>
                 <hr>
-                <h4>Items:</h4>
-                <ul>
-                    {% for item in shop.items %}
-                        <li>{{ item.name }} - {{ item.price }}</li>
-                    {% endfor %}
-                </ul>
+                <a href="{{ url_for('manage_shop', shop_id=shop.id) }}" class="btn btn-warning">Manage Shop</a>
             </div>
         {% endfor %}
     </div>

@@ -54,6 +54,43 @@ def search_items():
         return render_template('search_results.html', items=items)
     return render_template('search.html')
 
+@app.route('/shop_catalogue', methods=['GET'])
+def shop_catalogue():
+    shops = Shop.query.all()
+    return render_template('shop_catalogue.html', shops=shops)
+
+
+@app.route('/manage_shop/<int:shop_id>', methods=['GET', 'POST'])
+def manage_shop(shop_id):
+    shop = Shop.query.get_or_404(shop_id)
+    if request.method == 'POST':
+        # Handle adding an item
+        if 'item_name' in request.form:
+            new_item = Item(
+                name=request.form['item_name'],
+                price=request.form['price'],
+                shop_id=shop.id
+            )
+            db.session.add(new_item)
+            db.session.commit()
+            return redirect(url_for('manage_shop', shop_id=shop.id))
+
+        # Handle deleting an item
+        if 'delete_item_id' in request.form:
+            item_id = int(request.form['delete_item_id'])
+            item = Item.query.get_or_404(item_id)
+            db.session.delete(item)
+            db.session.commit()
+            return redirect(url_for('manage_shop', shop_id=shop.id))
+
+        # Handle deleting the shop
+        if 'delete_shop' in request.form:
+            db.session.delete(shop)
+            db.session.commit()
+            return redirect(url_for('get_shops'))
+
+    return render_template('manage_shop.html', shop=shop)
+
 @app.route('/shops', methods=['GET'])
 def get_shops():
     shops = Shop.query.all()
